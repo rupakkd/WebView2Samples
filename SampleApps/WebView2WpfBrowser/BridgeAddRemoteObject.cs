@@ -2,10 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Reflection;
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace WebView2WpfBrowser
@@ -16,7 +15,7 @@ namespace WebView2WpfBrowser
     // The.NET version of CoreWebView2.AddHostObjectToScript currently relies on the host object
     // implementing IDispatch and so uses the deprecated ClassInterfaceType.AutoDual feature of.NET.
     // This may change in the future, please see https://github.com/MicrosoftEdge/WebView2Feedback/issues/517  for more information
-   [ClassInterface(ClassInterfaceType.AutoDual)]
+    [ClassInterface(ClassInterfaceType.AutoDual)]
 #pragma warning restore CS0618
     [ComVisible(true)]
     public class AnotherRemoteObject

@@ -12,13 +12,13 @@
     }
 
     return query.
-        split("&").
-        map(encodedNameValueStr => encodedNameValueStr.split("=")).
-        reduce((resultObject, encodedNameValueArr) => {
-          const nameValueArr = encodedNameValueArr.map(decodeURIComponent);
-          resultObject[nameValueArr[0]] = nameValueArr[1];
-          return resultObject;
-        }, {});
+      split("&").
+      map(encodedNameValueStr => encodedNameValueStr.split("=")).
+      reduce((resultObject, encodedNameValueArr) => {
+        const nameValueArr = encodedNameValueArr.map(decodeURIComponent);
+        resultObject[nameValueArr[0]] = nameValueArr[1];
+        return resultObject;
+      }, {});
   }
 
   const sdkReleasesNode = document.getElementById("sdkReleases");

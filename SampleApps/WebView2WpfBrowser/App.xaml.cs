@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-using System.Runtime.InteropServices;
 using System.Windows;
 
 namespace WebView2WpfBrowser
@@ -17,7 +16,7 @@ namespace WebView2WpfBrowser
         public App()
         {
             InitializeComponent();
-                this.Resources["AdditionalArgs"] = "--enable-features=ThirdPartyStoragePartitioning,PartitionedCookies";
+            this.Resources["AdditionalArgs"] = "--enable-features=ThirdPartyStoragePartitioning,PartitionedCookies";
 
         }
     }

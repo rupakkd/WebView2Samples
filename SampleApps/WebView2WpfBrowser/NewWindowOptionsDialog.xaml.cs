@@ -2,18 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 
 namespace WebView2WpfBrowser
@@ -76,7 +65,8 @@ namespace WebView2WpfBrowser
             }
         }
 
-        void OK_Clicked (object sender, RoutedEventArgs args) {
+        void OK_Clicked(object sender, RoutedEventArgs args)
+        {
             CreationProperties.BrowserExecutableFolder = BrowserExecutableFolder.Text == "" ? null : BrowserExecutableFolder.Text;
             CreationProperties.UserDataFolder = UserDataFolder.Text == "" ? null : UserDataFolder.Text;
             CreationProperties.Language = EnvLanguage.Text == "" ? null : EnvLanguage.Text;

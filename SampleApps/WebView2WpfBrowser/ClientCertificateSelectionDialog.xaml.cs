@@ -1,7 +1,7 @@
-﻿using Microsoft.Web.WebView2.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using Microsoft.Web.WebView2.Core;
 
 namespace WebView2WpfBrowser
 {
