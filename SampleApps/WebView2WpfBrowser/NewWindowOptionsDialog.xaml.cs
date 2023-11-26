@@ -49,17 +49,17 @@ namespace WebView2WpfBrowser
                     EnvLanguage.Text = _creationProperties.Language;
                     ProfileName.Text = _creationProperties.ProfileName;
                     ScriptLocale.Text = _creationProperties.ScriptLocale;
-                    if (_creationProperties.IsInPrivateModeEnabled == null)
+                    switch (_creationProperties.IsInPrivateModeEnabled)
                     {
-                        comboBox_IsInPrivateModeEnabled.SelectedIndex = 2;
-                    }
-                    else if (_creationProperties.IsInPrivateModeEnabled == true)
-                    {
-                        comboBox_IsInPrivateModeEnabled.SelectedIndex = 0;
-                    }
-                    else if (_creationProperties.IsInPrivateModeEnabled == false)
-                    {
-                        comboBox_IsInPrivateModeEnabled.SelectedIndex = 1;
+                        case null:
+                            comboBox_IsInPrivateModeEnabled.SelectedIndex = 2;
+                            break;
+                        case true:
+                            comboBox_IsInPrivateModeEnabled.SelectedIndex = 0;
+                            break;
+                        case false:
+                            comboBox_IsInPrivateModeEnabled.SelectedIndex = 1;
+                            break;
                     }
                 }
             }
@@ -72,17 +72,17 @@ namespace WebView2WpfBrowser
             CreationProperties.Language = EnvLanguage.Text == "" ? null : EnvLanguage.Text;
             CreationProperties.ProfileName = ProfileName.Text == "" ? null : ProfileName.Text;
             CreationProperties.ScriptLocale = ScriptLocale.Text == "" ? null : ScriptLocale.Text;
-            if (comboBox_IsInPrivateModeEnabled.SelectedIndex == 0)
+            switch (comboBox_IsInPrivateModeEnabled.SelectedIndex)
             {
-                CreationProperties.IsInPrivateModeEnabled = true;
-            }
-            else if (comboBox_IsInPrivateModeEnabled.SelectedIndex == 1)
-            {
-                CreationProperties.IsInPrivateModeEnabled = false;
-            }
-            else if (comboBox_IsInPrivateModeEnabled.SelectedIndex == 2)
-            {
-                CreationProperties.IsInPrivateModeEnabled = null;
+                case 0:
+                    CreationProperties.IsInPrivateModeEnabled = true;
+                    break;
+                case 1:
+                    CreationProperties.IsInPrivateModeEnabled = false;
+                    break;
+                case 2:
+                    CreationProperties.IsInPrivateModeEnabled = null;
+                    break;
             }
 
             this.DialogResult = true;

@@ -21,17 +21,19 @@ namespace WebView2WpfBrowser
             {
                 Title = title;
             }
+
             if (host != null && port > 0)
             {
                 Description.Text = String.Format("Site {0}:{1} needs your credentials:", host, port);
             }
+
             if (client_cert_list != null)
             {
                 CertificateDataBinding.SelectedItem = client_cert_list[0];
                 CertificateDataBinding.ItemsSource = client_cert_list;
             }
         }
-        void ok_Clicked(object sender, RoutedEventArgs args)
+        void Ok_Clicked(object sender, RoutedEventArgs args)
         {
             this.DialogResult = true;
         }

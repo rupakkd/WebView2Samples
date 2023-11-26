@@ -21,7 +21,7 @@
     </Grid.RowDefinitions>
     <TextBlock x:Name="Description" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"/>
     <TextBox x:Name="Input" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"/>
-    <Button Click="ok_Clicked" IsDefault="True" Grid.Column="1" Grid.Row="2" Width="60">OK</Button>
+    <Button Click="Ok_Clicked" IsDefault="True" Grid.Column="1" Grid.Row="2" Width="60">OK</Button>
     <Button IsCancel="True" Grid.Column="2" Grid.Row="2" Width="60">Cancel</Button>
   </Grid>
 </Window>

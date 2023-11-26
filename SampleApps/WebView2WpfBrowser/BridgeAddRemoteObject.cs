@@ -43,6 +43,7 @@ namespace WebView2WpfBrowser
             {
                 await Task.Delay(msDelay);
             }
+
             return $"BridgeAddRemoteObject.FuncAsync({msDelay})";
         }
 
@@ -91,10 +92,10 @@ namespace WebView2WpfBrowser
         [System.Runtime.CompilerServices.IndexerName("Items")]
         public string this[int index]
         {
-            get { return m_dictionary[index]; }
-            set { m_dictionary[index] = value; }
+            get { return _dictionary[index]; }
+            set { _dictionary[index] = value; }
         }
-        private Dictionary<int, string> m_dictionary = new Dictionary<int, string>();
+        private readonly Dictionary<int, string> _dictionary = new Dictionary<int, string>();
 
         public void InvokeEvent()
         {
@@ -103,11 +104,13 @@ namespace WebView2WpfBrowser
             TestEvent2?.Invoke("param1", DateTime.UtcNow);
         }
 #pragma warning disable CS0067
+#pragma warning disable IDE1006 // Naming Styles
         public delegate void TestEvent0Delegate();
-        public event TestEvent0Delegate TestEvent0;
         public delegate void TestEvent1Delegate(String param1);
-        public event TestEvent1Delegate TestEvent1;
         public delegate void TestEvent2Delegate(String param1, DateTime param2);
+#pragma warning restore IDE1006 // Naming Styles
+        public event TestEvent0Delegate TestEvent0;
+        public event TestEvent1Delegate TestEvent1;
         public event TestEvent2Delegate TestEvent2;
 #pragma warning restore CS0067
     }

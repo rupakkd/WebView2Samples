@@ -17,19 +17,22 @@ namespace WebView2WpfBrowser
             {
                 Title = title;
             }
+
             if (description != null)
             {
                 Description.Text = description;
             }
+
             if (defaultInput != null)
             {
                 Input.Text = defaultInput;
             }
+
             Input.Focus();
             Input.SelectAll();
         }
 
-        void ok_Clicked(object sender, RoutedEventArgs args)
+        void Ok_Clicked(object sender, RoutedEventArgs args)
         {
             this.DialogResult = true;
         }
