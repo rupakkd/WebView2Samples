@@ -294,3 +294,5 @@ dotnet_naming_style.const.capitalization = all_upper
 
 # IDE0009: Member access should be qualified.
 dotnet_style_qualification_for_method = false
+
+dotnet_diagnostic.IDE0009.severity = none

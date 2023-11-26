@@ -396,11 +396,14 @@ namespace WebView2WpfBrowser
             {
                 // Create a new CoreWebView2CreationProperties instance so the environment
                 // is made anew.
-                replacementControl.CreationProperties = new CoreWebView2CreationProperties();
-                replacementControl.CreationProperties.BrowserExecutableFolder = webView.CreationProperties.BrowserExecutableFolder;
-                replacementControl.CreationProperties.Language = webView.CreationProperties.Language;
-                replacementControl.CreationProperties.UserDataFolder = webView.CreationProperties.UserDataFolder;
-                replacementControl.CreationProperties.AdditionalBrowserArguments = webView.CreationProperties.AdditionalBrowserArguments;
+                replacementControl.CreationProperties =
+                    new CoreWebView2CreationProperties
+                    {
+                        BrowserExecutableFolder = webView.CreationProperties.BrowserExecutableFolder,
+                        Language = webView.CreationProperties.Language,
+                        UserDataFolder = webView.CreationProperties.UserDataFolder,
+                        AdditionalBrowserArguments = webView.CreationProperties.AdditionalBrowserArguments,
+                    };
                 shouldAttachEnvironmentEventHandlers = true;
             }
             else
@@ -836,7 +839,7 @@ namespace WebView2WpfBrowser
             for (var i = 0; i < cookieList.Count; ++i)
             {
                 var cookie = webView.CoreWebView2.CookieManager.CreateCookieWithSystemNetCookie(cookieList[i].ToSystemNetCookie());
-                cookieResult.Append($"\n{cookie.Name} {cookie.Value} {(cookie.IsSession ? "[session cookie]" : cookie.Expires.ToString("G"))}");
+                cookieResult.Append($"\n{cookie.Name} {cookie.Value} {(cookie.IsSession ? "[session cookie]" : $"{cookie.Expires:G}")}");
             }
 
             MessageBox.Show(this, cookieResult.ToString(), "GetCookiesAsync");
@@ -946,8 +949,8 @@ namespace WebView2WpfBrowser
                 {
                     var reply = "{\"WindowBounds\":\"Left:" + 0 +
                                 @"\nTop:" + 0 +
-                                @$"\nRight:{webView.ActualWidth}" +
-                                @$"\nBottom:{webView.ActualHeight}" +
+                                $@"\nRight:{webView.ActualWidth}" +
+                                $@"\nBottom:{webView.ActualHeight}" +
                                 "\"}";
 
                     webView.CoreWebView2.PostWebMessageAsJson(reply);
@@ -1421,7 +1424,7 @@ namespace WebView2WpfBrowser
         void UpdateProgress(CoreWebView2DownloadOperation download)
         {
             // <BytesReceivedChanged>
-            download.BytesReceivedChanged += delegate (object sender, Object e)
+            download.BytesReceivedChanged += delegate (object sender, object e)
             {
                 // Here developer can update download dialog to show progress of a
                 // download using `download.BytesReceived` and `download.TotalBytesToReceive`
@@ -1429,7 +1432,7 @@ namespace WebView2WpfBrowser
             // </BytesReceivedChanged>
 
             // <StateChanged>
-            download.StateChanged += delegate (object sender, Object e)
+            download.StateChanged += delegate (object sender, object e)
             {
                 switch (download.State)
                 {
@@ -2146,7 +2149,7 @@ namespace WebView2WpfBrowser
                     result += "; ";
                 }
 
-                result += $"{i.ToString()} {(String.IsNullOrEmpty(_webViewFrames[i].Name) ? "<empty_name>" : _webViewFrames[i].Name)}";
+                result += $"{i} {(String.IsNullOrEmpty(_webViewFrames[i].Name) ? "<empty_name>" : _webViewFrames[i].Name)}";
             }
 
             return String.IsNullOrEmpty(result) ? "no iframes available." : result;
