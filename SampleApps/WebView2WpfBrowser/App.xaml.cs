@@ -17,7 +17,6 @@ namespace WebView2WpfBrowser
         {
             InitializeComponent();
             this.Resources["AdditionalArgs"] = "--enable-features=ThirdPartyStoragePartitioning,PartitionedCookies";
-
         }
     }
 }

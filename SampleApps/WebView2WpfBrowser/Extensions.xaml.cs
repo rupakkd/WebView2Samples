@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Web.WebView2.Core;
@@ -43,13 +42,13 @@ namespace WebView2WpfBrowser
             _listData.Clear();
             for (var i = 0; i < extensionsList.Count; ++i)
             {
-                var entry = 
+                var entry =
                     new ListEntry
-                {
-                    Name = extensionsList[i].Name,
-                    Id = extensionsList[i].Id,
-                    Enabled = extensionsList[i].IsEnabled
-                };
+                    {
+                        Name = extensionsList[i].Name,
+                        Id = extensionsList[i].Id,
+                        Enabled = extensionsList[i].IsEnabled
+                    };
                 _listData.Add(entry);
             }
 

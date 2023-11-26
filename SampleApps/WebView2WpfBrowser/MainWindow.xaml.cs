@@ -268,9 +268,7 @@ namespace WebView2WpfBrowser
         {
             if (_isPrintToPdfInProgress)
             {
-                var selection = MessageBox.Show(
-                    "Print to PDF in progress. Continue closing?",
-                    "Print to PDF", MessageBoxButton.YesNo);
+                var selection = MessageBox.Show("Print to PDF in progress. Continue closing?", "Print to PDF", MessageBoxButton.YesNo);
                 if (selection == MessageBoxResult.No)
                 {
                     return;
