@@ -567,7 +567,7 @@ namespace WebView2WpfBrowser
         {
             // <ExecuteScriptFrame>
             var iframesData = WebViewFrames_ToString();
-            var iframesInfo = "Enter iframe to run the JavaScript code in.\r\nAvailable iframes: " + iframesData;
+            var iframesInfo = $"Enter iframe to run the JavaScript code in.\r\nAvailable iframes: {iframesData}";
             var dialogIFrames = new TextInputDialog(
                 title: "Inject Script Into IFrame",
                 description: iframesInfo,
@@ -581,14 +581,14 @@ namespace WebView2WpfBrowser
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Can not convert " + dialogIFrames.Input.Text + " to int");
+                    Console.WriteLine($"Can not convert {dialogIFrames.Input.Text} to int");
                 }
 
                 if (iframeNumber >= 0 && iframeNumber < _webViewFrames.Count)
                 {
                     var dialog = new TextInputDialog(
                         title: "Inject Script",
-                        description: "Enter some JavaScript to be executed in the context of iframe " + dialogIFrames.Input.Text,
+                        description: $"Enter some JavaScript to be executed in the context of iframe {dialogIFrames.Input.Text}",
                         defaultInput: "window.getComputedStyle(document.body).backgroundColor");
                     if (dialog.ShowDialog() == true)
                     {
@@ -624,7 +624,7 @@ namespace WebView2WpfBrowser
                 var saveFileDialog =
                     new Microsoft.Win32.SaveFileDialog
                     {
-                        InitialDirectory = "C:\\",
+                        InitialDirectory = @"C:\",
                         Filter = "Pdf Files|*.pdf"
                     };
                 var result = saveFileDialog.ShowDialog();
@@ -634,15 +634,14 @@ namespace WebView2WpfBrowser
                     var isSuccessful = await webView.CoreWebView2.PrintToPdfAsync(
                         saveFileDialog.FileName, printSettings);
                     _isPrintToPdfInProgress = false;
-                    var message = isSuccessful ?
-                        "Print to PDF succeeded" : "Print to PDF failed";
+                    var message = $"Print to PDF {(isSuccessful ? "succeeded" : "failed")}";
                     MessageBox.Show(this, message, "Print To PDF Completed");
                 }
                 // </PrintToPdf>
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Print to PDF Failed: " + exception.Message,
+                MessageBox.Show(this, $"Print to PDF Failed: {exception.Message}",
                    "Print to PDF");
             }
         }
@@ -679,21 +678,19 @@ namespace WebView2WpfBrowser
                 switch (printStatus)
                 {
                     case CoreWebView2PrintStatus.Succeeded:
-                        MessageBox.Show(this, "Printing " + title + " document to printer is succeeded", "Print");
+                        MessageBox.Show(this, $"Printing {title} document to printer is succeeded", "Print");
                         break;
                     case CoreWebView2PrintStatus.PrinterUnavailable:
                         MessageBox.Show(this, "Printer is not available, offline or error state", "Print");
                         break;
                     default:
-                        MessageBox.Show(this, "Printing " + title + " document to printer is failed",
-                                "Print");
+                        MessageBox.Show(this, $"Printing {title} document to printer is failed", "Print");
                         break;
                 }
             }
             catch (Exception)
             {
-                MessageBox.Show(this, "Printing " + title + " document already in progress",
-                         "Print");
+                MessageBox.Show(this, $"Printing {title} document already in progress", "Print");
             }
         }
 
@@ -757,26 +754,23 @@ namespace WebView2WpfBrowser
                 switch (printStatus)
                 {
                     case CoreWebView2PrintStatus.Succeeded:
-                        MessageBox.Show(this, "Printing " + title + " document to printer is succeeded", "Print to printer");
+                        MessageBox.Show(this, $"Printing {title} document to printer is succeeded", "Print to printer");
                         break;
                     case CoreWebView2PrintStatus.PrinterUnavailable:
                         MessageBox.Show(this, "Selected printer is not found, not available, offline or error state", "Print to printer");
                         break;
                     default:
-                        MessageBox.Show(this, "Printing " + title + " document to printer is failed",
-                                "Print");
+                        MessageBox.Show(this, $"Printing {title} document to printer is failed", "Print");
                         break;
                 }
             }
             catch (ArgumentException)
             {
-                MessageBox.Show(this, "Invalid settings provided for the specified printer",
-                    "Print");
+                MessageBox.Show(this, "Invalid settings provided for the specified printer", "Print");
             }
             catch (Exception)
             {
-                MessageBox.Show(this, "Printing " + title + " document already in progress",
-                        "Print");
+                MessageBox.Show(this, $"Printing {title} document already in progress", "Print");
 
             }
         }
@@ -793,12 +787,11 @@ namespace WebView2WpfBrowser
                 // Passing null for `PrintSettings` results in default print settings used.
                 var stream = await webView.CoreWebView2.PrintToPdfStreamAsync(null);
                 DisplayPdfDataInPrintDialog(stream);
-                MessageBox.Show(this, "Printing" + title + " document to PDF Stream " + ((stream != null) ? "succeeded" : "failed"), "Print To PDF Stream");
+                MessageBox.Show(this, $"Printing {title} document to PDF Stream {((stream != null) ? "succeeded" : "failed")}", "Print To PDF Stream");
             }
             catch (Exception exception)
             {
-                MessageBox.Show(this, "Printing to PDF Stream failed: " + exception.Message,
-                   "Print to PDF Stream");
+                MessageBox.Show(this, $"Printing to PDF Stream failed: {exception.Message}", "Print to PDF Stream");
             }
         }
 
@@ -841,7 +834,7 @@ namespace WebView2WpfBrowser
         {
             // <GetCookies>
             var cookieList = await webView.CoreWebView2.CookieManager.GetCookiesAsync("https://www.bing.com");
-            var cookieResult = new StringBuilder(cookieList.Count + " cookie(s) received from https://www.bing.com\n");
+            var cookieResult = new StringBuilder($"{cookieList.Count} cookie(s) received from https://www.bing.com\n");
             for (var i = 0; i < cookieList.Count; ++i)
             {
                 var cookie = webView.CoreWebView2.CookieManager.CreateCookieWithSystemNetCookie(cookieList[i].ToSystemNetCookie());
@@ -912,13 +905,11 @@ namespace WebView2WpfBrowser
                 try
                 {
                     await WebViewProfile.ClearCustomDataPartitionAsync(dialog.Input.Text);
-                    MessageBox.Show(this,
-                       "Completed",
-                       "Clear Custom Data Partition");
+                    MessageBox.Show(this, "Completed", "Clear Custom Data Partition");
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(this, "ClearCustomDataPartitionAsync Failed: " + exception.Message, "Clear Custom Data Partition");
+                    MessageBox.Show(this, $"ClearCustomDataPartitionAsync Failed: {exception.Message}", "Clear Custom Data Partition");
                 }
             }
             // </ClearCustomDataPartition>
@@ -952,16 +943,14 @@ namespace WebView2WpfBrowser
                 {
                     var msgLength = "SetTitleText".Length;
                     this.Title = message.Substring(msgLength);
-
                 }
-
                 else if (message == "GetWindowBounds")
                 {
                     var reply = "{\"WindowBounds\":\"Left:" + 0 +
-                                   "\\nTop:" + 0 +
-                                   "\\nRight:" + webView.ActualWidth +
-                                   "\\nBottom:" + webView.ActualHeight +
-                                   "\"}";
+                                @"\nTop:" + 0 +
+                                @$"\nRight:{webView.ActualWidth}" +
+                                @$"\nBottom:{webView.ActualHeight}" +
+                                "\"}";
 
                     webView.CoreWebView2.PostWebMessageAsJson(reply);
                 }
@@ -1054,7 +1043,7 @@ namespace WebView2WpfBrowser
                 description: "Specify post data to submit to https://www.w3schools.com/action_page.php.");
             if (dialog.ShowDialog() == true)
             {
-                var postDataString = "input=" + dialog.Input.Text;
+                var postDataString = $"input={dialog.Input.Text}";
                 var utfEncoding = new UTF8Encoding();
                 var postData = utfEncoding.GetBytes(
                     postDataString);
@@ -1090,16 +1079,11 @@ namespace WebView2WpfBrowser
                 }
 
                 _isCustomContextMenu = !_isCustomContextMenu;
-                MessageBox.Show(this,
-                                _isCustomContextMenu
-                                    ? "Custom context menus have been enabled"
-                                    : "Custom context menus have been disabled",
-                                "Custom context menus");
+                MessageBox.Show(this, $"Custom context menus have been {(_isCustomContextMenu ? "enabled" : "disabled")}", "Custom context menus");
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Custom context menu Failed: " + exception.Message,
-                                "Custom context menus");
+                MessageBox.Show(this, $"Custom context menu Failed: {exception.Message}", "Custom context menus");
             }
         }
 
@@ -1231,16 +1215,11 @@ namespace WebView2WpfBrowser
                 }
 
                 _isFaviconChanged = !_isFaviconChanged;
-                MessageBox.Show(this,
-                                _isFaviconChanged
-                                    ? "Favicon Changed Listeners have been enabled"
-                                    : "Favicon Changed Listeners have been disabled",
-                                "Favicon Changed Listeners");
+                MessageBox.Show(this, $"Favicon Changed Listeners have been {(_isFaviconChanged ? "enabled" : "disabled")}", "Favicon Changed Listeners");
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Favicon Changed Listeners: " + exception.Message,
-                                "Favicon Changed Listeners");
+                MessageBox.Show(this, $"Favicon Changed Listeners: {exception.Message}", "Favicon Changed Listeners");
             }
         }
 
@@ -1257,7 +1236,7 @@ namespace WebView2WpfBrowser
             // <TogglePinchZoomEnabled>
             WebViewSettings.IsPinchZoomEnabled = !WebViewSettings.IsPinchZoomEnabled;
             // </TogglePinchZoomEnabled>
-            MessageBox.Show("Pinch Zoom is" + (WebViewSettings.IsPinchZoomEnabled ? " enabled " : " disabled ") + "after the next navigation.");
+            MessageBox.Show($"Pinch Zoom is {(WebViewSettings.IsPinchZoomEnabled ? "enabled" : "disabled")} after the next navigation.");
         }
 
         void SwipeNavigationCmdExecuted(object target, ExecutedRoutedEventArgs e)
@@ -1268,11 +1247,11 @@ namespace WebView2WpfBrowser
                 // <ToggleSwipeNavigationEnabled>
                 WebViewSettings.IsSwipeNavigationEnabled = !WebViewSettings.IsSwipeNavigationEnabled;
                 // </ToggleSwipeNavigationEnabled>
-                MessageBox.Show("Swipe to navigate is" + (WebViewSettings.IsSwipeNavigationEnabled ? " enabled " : " disabled ") + "after the next navigation.");
+                MessageBox.Show($"Swipe to navigate is {(WebViewSettings.IsSwipeNavigationEnabled ? "enabled" : "disabled")} after the next navigation.");
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Toggle Swipe Navigation Failed: " + exception.Message, "Swipe Navigation");
+                MessageBox.Show(this, $"Toggle Swipe Navigation Failed: {exception.Message}", "Swipe Navigation");
             }
         }
 
@@ -1284,7 +1263,7 @@ namespace WebView2WpfBrowser
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Delete profile Failed: " + exception.Message, "Profile Delete");
+                MessageBox.Show(this, $"Delete profile Failed: {exception.Message}", "Profile Delete");
             }
         }
 
@@ -1415,7 +1394,7 @@ namespace WebView2WpfBrowser
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "DownloadStarting Failed: " + exception.Message, "Download Starting");
+                MessageBox.Show(this, $"DownloadStarting Failed: {exception.Message}", "Download Starting");
             }
         }
 
@@ -1436,8 +1415,7 @@ namespace WebView2WpfBrowser
             catch (NotImplementedException exception)
             {
                 MessageBox.Show(this,
-                    "Set default download folder path failed: " +
-                    exception.Message, "Set Default Download Folder Path");
+                    $"Set default download folder path failed: {exception.Message}", "Set Default Download Folder Path");
             }
         }
 
@@ -1497,7 +1475,7 @@ namespace WebView2WpfBrowser
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Custom client certificate selection Failed: " + exception.Message, "Custom client certificate selection");
+                MessageBox.Show(this, $"Custom client certificate selection Failed: {exception.Message}", "Custom client certificate selection");
             }
         }
 
@@ -1576,7 +1554,7 @@ namespace WebView2WpfBrowser
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Custom client certificate selection dialog Failed: " + exception.Message, "Client certificate selection");
+                MessageBox.Show(this, $"Custom client certificate selection dialog Failed: {exception.Message}", "Client certificate selection");
             }
         }
         // </ClientCertificateRequested2>
@@ -1598,12 +1576,12 @@ namespace WebView2WpfBrowser
 
                 _isLaunchingExternalUriSchemeEnabled = !_isLaunchingExternalUriSchemeEnabled;
                 MessageBox.Show(this,
-                _isLaunchingExternalUriSchemeEnabled ? "Launching Registered URI Scheme support has been enabled" : "Launching Registered URI Scheme support has been disabled",
-                "Launching Registered URI Scheme");
+                    _isLaunchingExternalUriSchemeEnabled ? "Launching Registered URI Scheme support has been enabled" : "Launching Registered URI Scheme support has been disabled",
+                    "Launching Registered URI Scheme");
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Launching Registered URI Scheme support failed: " + exception.Message, "Launching Registered URI Scheme");
+                MessageBox.Show(this, $"Launching Registered URI Scheme support failed: {exception.Message}", "Launching Registered URI Scheme");
             }
         }
 
@@ -1704,13 +1682,11 @@ namespace WebView2WpfBrowser
 
                 _isServerCertificateError = !_isServerCertificateError;
 
-                MessageBox.Show(this, "Custom server certificate support has been" +
-                    (_isServerCertificateError ? "enabled" : "disabled"),
-                    "Custom server certificate support");
+                MessageBox.Show(this, $"Custom server certificate support has been{(_isServerCertificateError ? "enabled" : "disabled")}", "Custom server certificate support");
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Custom server certificate support failed: " + exception.Message, "Custom server certificate support");
+                MessageBox.Show(this, $"Custom server certificate support failed: {exception.Message}", "Custom server certificate support");
             }
         }
 
@@ -1776,13 +1752,12 @@ namespace WebView2WpfBrowser
             else if (!rawUrl.Contains(" ") && rawUrl.Contains("."))
             {
                 // An invalid URI contains a dot and no spaces, try tacking http:// on the front.
-                uri = new Uri("http://" + rawUrl);
+                uri = new Uri($"http://{rawUrl}");
             }
             else
             {
                 // Otherwise treat it as a web search.
-                uri = new Uri("https://bing.com/search?q=" +
-                    String.Join("+", Uri.EscapeDataString(rawUrl).Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries)));
+                uri = new Uri($"https://bing.com/search?q={String.Join("+", Uri.EscapeDataString(rawUrl).Split(new string[] { "%20" }, StringSplitOptions.RemoveEmptyEntries))}");
             }
 
             // <Navigate>
@@ -1805,7 +1780,7 @@ namespace WebView2WpfBrowser
             }
             catch (COMException exception)
             {
-                MessageBox.Show(this, "TrySuspendAsync failed:" + exception.Message, "TrySuspendAsync");
+                MessageBox.Show(this, $"TrySuspendAsync failed:{exception.Message}", "TrySuspendAsync");
             }
         }
         void ResumeCmdExecuted(object target, ExecutedRoutedEventArgs e)
@@ -1819,7 +1794,7 @@ namespace WebView2WpfBrowser
             }
             catch (COMException exception)
             {
-                MessageBox.Show(this, "Resume failed:" + exception.Message, "Resume");
+                MessageBox.Show(this, $"Resume failed:{exception.Message}", "Resume");
             }
         }
 
@@ -1830,13 +1805,13 @@ namespace WebView2WpfBrowser
             {
                 // <UpdateRuntime>
                 var result = await webView.CoreWebView2.Environment.UpdateRuntimeAsync();
-                var update_result = "status: " + result.Status + ", extended error:" + result.ExtendedError;
+                var update_result = $"status: {result.Status}, extended error:{result.ExtendedError}";
                 MessageBox.Show(this, update_result, "UpdateRuntimeAsync result");
                 // </UpdateRuntime>
             }
             catch (COMException exception)
             {
-                MessageBox.Show(this, "UpdateRuntimeAsync failed:" + exception.Message, "UpdateRuntimeAsync");
+                MessageBox.Show(this, $"UpdateRuntimeAsync failed:{exception.Message}", "UpdateRuntimeAsync");
             }
 #else
             await Task.CompletedTask;
@@ -1926,7 +1901,7 @@ namespace WebView2WpfBrowser
                 return "Invalid SDK build version";
             }
             // Keep C.D
-            return versionList[2] + "." + versionList[3];
+            return $"{versionList[2]}.{versionList[3]}";
         }
 
         private string GetRuntimeVersion(CoreWebView2 webView2)
@@ -2173,8 +2148,7 @@ namespace WebView2WpfBrowser
                     result += "; ";
                 }
 
-                result += i.ToString() + " " +
-                    (String.IsNullOrEmpty(_webViewFrames[i].Name) ? "<empty_name>" : _webViewFrames[i].Name);
+                result += $"{i.ToString()} {(String.IsNullOrEmpty(_webViewFrames[i].Name) ? "<empty_name>" : _webViewFrames[i].Name)}";
             }
 
             return String.IsNullOrEmpty(result) ? "no iframes available." : result;
@@ -2346,7 +2320,7 @@ namespace WebView2WpfBrowser
             var isDocumentPlayingAudio = webView.CoreWebView2.IsDocumentPlayingAudio;
             var isMuted = webView.CoreWebView2.IsMuted;
             var currentDocumentTitle = webView.CoreWebView2.DocumentTitle;
-            this.Title = isDocumentPlayingAudio ? isMuted ? "🔇 " + currentDocumentTitle : "🔊 " + currentDocumentTitle : currentDocumentTitle;
+            this.Title = isDocumentPlayingAudio ? $"{(isMuted ? "🔇" : "🔊")} {currentDocumentTitle}" : currentDocumentTitle;
             // </UpdateTitleWithMuteState>
         }
         void WebView_IsMutedChanged(object sender, object e)
@@ -2410,7 +2384,8 @@ namespace WebView2WpfBrowser
         // </GetProcessInfos>
 
 #if USE_WEBVIEW2_EXPERIMENTAL
-        string AppendFrameInfo(CoreWebView2FrameInfo frameInfo) {
+        string AppendFrameInfo(CoreWebView2FrameInfo frameInfo)
+        {
             var id = frameInfo.FrameId.ToString();
             var kind = frameInfo.FrameKind.ToString();
             var name = String.IsNullOrEmpty(frameInfo.Name) ? "none" : frameInfo.Name;
@@ -2420,14 +2395,16 @@ namespace WebView2WpfBrowser
 
             var mainFrame = GetAncestorMainFrameInfo(frameInfo);
             var mainFrameId = mainFrame.FrameId.ToString();
-            if (frameInfo == mainFrame) {
-              type = "main frame";
+            if (frameInfo == mainFrame)
+            {
+                type = "main frame";
             }
 
             var childFrame = GetAncestorMainFrameDirectChildFrameInfo(frameInfo);
             var childFrameId = childFrame == null ? "none" : childFrame.FrameId.ToString();
-            if (frameInfo == childFrame) {
-              type = "first level frame";
+            if (frameInfo == childFrame)
+            {
+                type = "first level frame";
             }
 
             return $"{{frame Id:{id} " +
@@ -2440,12 +2417,14 @@ namespace WebView2WpfBrowser
                    $"| frame Source: \"{source}\"}}\n";
         }
 
-        CoreWebView2FrameInfo GetAncestorMainFrameInfo(CoreWebView2FrameInfo frameInfo) {
-          while (frameInfo.ParentFrameInfo != null) {
-            frameInfo = frameInfo.ParentFrameInfo;
-          }
+        CoreWebView2FrameInfo GetAncestorMainFrameInfo(CoreWebView2FrameInfo frameInfo)
+        {
+            while (frameInfo.ParentFrameInfo != null)
+            {
+                frameInfo = frameInfo.ParentFrameInfo;
+            }
 
-          return frameInfo;
+            return frameInfo;
         }
 
         // Get the frame's corresponding main frame's direct child frameInfo.
@@ -2460,20 +2439,23 @@ namespace WebView2WpfBrowser
         // C GetAncestorMainFrameDirectChildFrameInfo returns C.
         // D GetAncestorMainFrameDirectChildFrameInfo returns B.
         // F GetAncestorMainFrameDirectChildFrameInfo returns C.
-        CoreWebView2FrameInfo GetAncestorMainFrameDirectChildFrameInfo(CoreWebView2FrameInfo frameInfo) {
-          if (frameInfo.ParentFrameInfo == null) {
-            return null;
-          }
+        CoreWebView2FrameInfo GetAncestorMainFrameDirectChildFrameInfo(CoreWebView2FrameInfo frameInfo)
+        {
+            if (frameInfo.ParentFrameInfo == null)
+            {
+                return null;
+            }
 
-          CoreWebView2FrameInfo childFrameInfo = null;
-          CoreWebView2FrameInfo mainFrameInfo = null;
-          while (frameInfo != null) {
-            childFrameInfo = mainFrameInfo;
-            mainFrameInfo = frameInfo;
-            frameInfo = frameInfo.ParentFrameInfo;
-          }
+            CoreWebView2FrameInfo childFrameInfo = null;
+            CoreWebView2FrameInfo mainFrameInfo = null;
+            while (frameInfo != null)
+            {
+                childFrameInfo = mainFrameInfo;
+                mainFrameInfo = frameInfo;
+                frameInfo = frameInfo.ParentFrameInfo;
+            }
 
-          return childFrameInfo;
+            return childFrameInfo;
         }
 #endif
 
@@ -2516,13 +2498,12 @@ namespace WebView2WpfBrowser
                 }
                 // </GetProcessExtendedInfos>
                 var message = $"{processCount} process(es) found in total, from which {rendererProcessCount} renderer process(es) found\n\n" +
-                                 $"{rendererProcessInfos}\nRemaining Process Infos:\n{otherProcessInfos}";
+                    $"{rendererProcessInfos}\nRemaining Process Infos:\n{otherProcessInfos}";
                 MessageBox.Show(this, message, "Process Extended Info");
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "GetProcessExtendedInfosAsync Failed: " + exception.Message,
-                   "Process Extended Info");
+                MessageBox.Show(this, $"GetProcessExtendedInfosAsync Failed: {exception.Message}", "Process Extended Info");
             }
 #else
             await Task.CompletedTask;
@@ -2576,8 +2557,7 @@ namespace WebView2WpfBrowser
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "Toggle download dialog: " + exception.Message,
-                    "Download Dialog");
+                MessageBox.Show(this, $"Toggle download dialog: {exception.Message}", "Download Dialog");
             }
         }
 
@@ -2623,7 +2603,7 @@ namespace WebView2WpfBrowser
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Create New Thread Failed: " + exception.Message, "Create New Thread");
+                MessageBox.Show($"Create New Thread Failed: {exception.Message}", "Create New Thread");
             }
         }
 
@@ -2680,7 +2660,7 @@ namespace WebView2WpfBrowser
             // <ToggleSmartScreenEnabled>
             WebViewSettings.IsReputationCheckingRequired = !WebViewSettings.IsReputationCheckingRequired;
             // </ToggleSmartScreenEnabled>
-            MessageBox.Show("SmartScreen is" + (WebViewSettings.IsReputationCheckingRequired ? " enabled " : " disabled ") + "after the next navigation.");
+            MessageBox.Show($"SmartScreen is {(WebViewSettings.IsReputationCheckingRequired ? "enabled" : "disabled")} after the next navigation.");
         }
 
         void PostMessageStringCommandExecuted(object target, ExecutedRoutedEventArgs e)
@@ -2698,8 +2678,7 @@ namespace WebView2WpfBrowser
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "PostMessageAsString Failed: " + exception.Message,
-                   "Post Message As String");
+                MessageBox.Show(this, $"PostMessageAsString Failed: {exception.Message}", "Post Message As String");
             }
         }
 
@@ -2719,8 +2698,7 @@ namespace WebView2WpfBrowser
             }
             catch (NotImplementedException exception)
             {
-                MessageBox.Show(this, "PostMessageAsJSON Failed: " + exception.Message,
-                   "Post Message As JSON");
+                MessageBox.Show(this, $"PostMessageAsJSON Failed: {exception.Message}", "Post Message As JSON");
             }
         }
 
@@ -2737,7 +2715,7 @@ namespace WebView2WpfBrowser
             }
             catch (Exception exception)
             {
-                MessageBox.Show(this, "Get User Data Folder Failed: " + exception.Message, "User Data Folder");
+                MessageBox.Show(this, $"Get User Data Folder Failed: {exception.Message}", "User Data Folder");
             }
         }
 
@@ -2891,7 +2869,7 @@ namespace WebView2WpfBrowser
                     var lastId = Int64.Parse(m_lastInitializeScriptId);
                     if (result > lastId)
                     {
-                        MessageBox.Show(this, scriptId, "Invalid ScriptId, should be less or equal than " + m_lastInitializeScriptId);
+                        MessageBox.Show(this, scriptId, $"Invalid ScriptId, should be less or equal than {m_lastInitializeScriptId}");
                     }
                     else
                     {
@@ -2915,17 +2893,17 @@ namespace WebView2WpfBrowser
         private async void CallCdpMethodCmdExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             var dialog = new TextInputDialog(
-              title: "Call CDP Method",
-              description: "Enter the CDP method name to call, followed by a space,\r\n" +
-                "followed by the parameters in JSON format.",
-              defaultInput: "Runtime.evaluate {\"expression\":\"alert(\\\"test\\\")\"}"
+                title: "Call CDP Method",
+                description: "Enter the CDP method name to call, followed by a space,\r\n" +
+                    "followed by the parameters in JSON format.",
+                defaultInput: @"Runtime.evaluate {""expression"":""alert(\""test\"")""}"
             );
             if (dialog.ShowDialog() == true)
             {
                 var words = dialog.Input.Text.Trim().Split(' ');
                 if (words.Length == 1 && words[0] == "")
                 {
-                    MessageBox.Show(this, "Invalid argument:" + dialog.Input.Text, "CDP Method call failed");
+                    MessageBox.Show(this, $"Invalid argument:{dialog.Input.Text}", "CDP Method call failed");
                     return;
                 }
 
@@ -2983,7 +2961,7 @@ namespace WebView2WpfBrowser
             // <ToggleHostObjectsAllowed>
             WebViewSettings.AreHostObjectsAllowed = !WebViewSettings.AreHostObjectsAllowed;
             // </ToggleHostObjectsAllowed>
-            MessageBox.Show("Access to host objects will be" + (WebViewSettings.AreHostObjectsAllowed ? " allowed " : " denied ") + "after the next navigation.");
+            MessageBox.Show($"Access to host objects will be {(WebViewSettings.AreHostObjectsAllowed ? "allowed" : "denied")} after the next navigation.");
         }
 
         void BrowserAcceleratorKeyEnabledCommandExecuted(object target, ExecutedRoutedEventArgs e)
@@ -2991,7 +2969,7 @@ namespace WebView2WpfBrowser
             // <ToggleBrowserAcceleratorKeyEnabled>
             WebViewSettings.AreBrowserAcceleratorKeysEnabled = !WebViewSettings.AreBrowserAcceleratorKeysEnabled;
             // </ToggleBrowserAcceleratorKeyEnabled>
-            MessageBox.Show("Browser-specific accelerator keys will be" + (WebViewSettings.AreBrowserAcceleratorKeysEnabled ? " enabled " : " disabled ") + "after the next navigation.");
+            MessageBox.Show($"Browser-specific accelerator keys will be {(WebViewSettings.AreBrowserAcceleratorKeysEnabled ? "enabled" : "disabled")} after the next navigation.");
         }
 
         async void InjectScriptWithResultCmdExecuted(object target, ExecutedRoutedEventArgs e)
@@ -3025,7 +3003,7 @@ namespace WebView2WpfBrowser
                     MessageBox.Show(this, exception.Name, "ExecuteScript Exception Name");
                     MessageBox.Show(this, exception.Message, "ExecuteScript Exception Message");
                     MessageBox.Show(this, exception.ToJson, "ExecuteScript Exception Detail");
-                    var location_info = "LineNumber:" + exception.LineNumber + ", ColumnNumber:" + exception.ColumnNumber;
+                    var location_info = $"LineNumber:{exception.LineNumber}, ColumnNumber:{exception.ColumnNumber}";
                     MessageBox.Show(this, location_info, "ExecuteScript Exception Location");
                 }
             }
@@ -3193,11 +3171,7 @@ namespace WebView2WpfBrowser
                     await WebViewProfile.GetNonDefaultPermissionSettingsAsync();
                 foreach (var setting in permissionList)
                 {
-                    var reply = "{\"PermissionSetting\": \"" +
-                                    NameOfPermissionKind(setting.PermissionKind) + ", " +
-                                    setting.PermissionOrigin + ", " +
-                                    PermissionStateToString(setting.PermissionState) +
-                                    "\"}";
+                    var reply = $"{{\"PermissionSetting\": \"{NameOfPermissionKind(setting.PermissionKind)}, {setting.PermissionOrigin}, {PermissionStateToString(setting.PermissionState)}\"}}";
                     webView.CoreWebView2.PostWebMessageAsJson(reply);
                 }
             }
@@ -3206,7 +3180,7 @@ namespace WebView2WpfBrowser
                 SynchronizationContext.Current.Post((_) =>
                 {
                     MessageBox.Show(this,
-                        "Permission manager not supported: " + exception.Message,
+                        $"Permission manager not supported: {exception.Message}",
                         "Permission Manager");
                 }, null);
             }

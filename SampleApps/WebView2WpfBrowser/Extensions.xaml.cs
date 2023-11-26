@@ -29,7 +29,7 @@ namespace WebView2WpfBrowser
 
             public override string ToString()
             {
-                return (Enabled ? "" : "Disabled ") + Name + " (" + Id + ")";
+                return $"{(Enabled ? $"" : $"Disabled ")}{Name} ({Id})";
             }
         }
 
@@ -79,7 +79,7 @@ namespace WebView2WpfBrowser
                     }
                     catch (Exception exception)
                     {
-                        MessageBox.Show("Failed to toggle extension enabled: " + exception);
+                        MessageBox.Show($"Failed to toggle extension enabled: {exception}");
                     }
 
                     found = true;
@@ -115,12 +115,12 @@ namespace WebView2WpfBrowser
                 try
                 {
                     var extension = await _coreWebView2.Profile.AddBrowserExtensionAsync(dialog.Input.Text);
-                    MessageBox.Show("Added extension " + extension.Name + " (" + extension.Id + ")");
+                    MessageBox.Show($"Added extension {extension.Name} ({extension.Id})");
                     await FillViewAsync();
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show("Failed to add extension: " + exception);
+                    MessageBox.Show($"Failed to add extension: {exception}");
                 }
             }
 #else
@@ -137,7 +137,7 @@ namespace WebView2WpfBrowser
         {
 #if USE_WEBVIEW2_EXPERIMENTAL
             var entry = (ListEntry)ExtensionsList.SelectedItem;
-            if (MessageBox.Show("Remove extension " + entry + "?", "Confirm removal", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (MessageBox.Show($"Remove extension {entry}?", "Confirm removal", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 var extensionsList = await _coreWebView2.Profile.GetBrowserExtensionsAsync();
                 var found = false;
@@ -151,7 +151,7 @@ namespace WebView2WpfBrowser
                         }
                         catch (Exception exception)
                         {
-                            MessageBox.Show("Failed to remove extension: " + exception);
+                            MessageBox.Show($"Failed to remove extension: {exception}");
                         }
 
                         found = true;

@@ -34,7 +34,7 @@ namespace WebView2WpfBrowser
         // Sample function that takes a parameter.
         public string Func(string param)
         {
-            return "BridgeAddRemoteObject.Func(" + param + ")";
+            return $"BridgeAddRemoteObject.Func({param})";
         }
 
         public async Task<string> FuncAsync(int msDelay)
